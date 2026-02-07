@@ -27,8 +27,9 @@ We built a multi-dimensional scoring engine that prioritizes tickets based on bu
 The engine calculates a **Priority Score (0-200)** for every ticket using four key signals:
 
 1.  **Semantic Urgency (AI)**
-    *   Uses a Large Language Model (Llama-3 via Groq) to analyze the *meaning* of the message.
-    *   It distinguishes between "System Down" (Critical) and "Feature Request" (Low), regardless of how polite or angry the customer is.
+    *   **Embeddings & Cosine Similarity** (Not LLMs).
+    *   We use `text-embedding-3-small` to convert messages into vectors and compare them against "Golden Anchors" (Urgency patterns).
+    *   LLMs were **only used during the analysis phase** to generate these anchors and validate the approach. The production engine relies purely on vector math for speed and deterministic results.
 
 2.  **Financial Impact (MRR)**
     *   High-value Enterprise clients have a higher churn cost.
